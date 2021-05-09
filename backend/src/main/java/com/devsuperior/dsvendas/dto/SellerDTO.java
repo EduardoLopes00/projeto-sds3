@@ -1,4 +1,4 @@
-package com.devsuperior.dto;
+package com.devsuperior.dsvendas.dto;
 
 import java.io.Serializable;
 

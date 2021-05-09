@@ -1,5 +1,7 @@
 package com.devsuperior.dsvendas.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.devsuperior.dsvendas.dto.SaleDTO;
+import com.devsuperior.dsvendas.dto.SaleSuccessDTO;
+import com.devsuperior.dsvendas.dto.SaleSumDTO;
 import com.devsuperior.dsvendas.service.SaleService;
-import com.devsuperior.dto.SaleDTO;
 
 @RestController
 @RequestMapping(value = "/sales")
@@ -20,6 +24,18 @@ public class SaleController {
 	@GetMapping
 	public ResponseEntity<Page<SaleDTO>> findAll(Pageable pageable) {
 		Page<SaleDTO> list = service.findAll(pageable);
+		return ResponseEntity.ok(list); //Retorna 200
+	}
+	
+	@GetMapping(value = "/amount-by-seller") //Quando não existe essae decorator, ele pega o caminho padrão da classe
+	public ResponseEntity<List<SaleSumDTO>> amountGroupedBySeller(Pageable pageable) {
+		List<SaleSumDTO> list = service.amountGroupedBySeller();
+		return ResponseEntity.ok(list); //Retorna 200
+	}
+	
+	@GetMapping(value = "/success-by-seller") //Quando não existe essae decorator, ele pega o caminho padrão da classe
+	public ResponseEntity<List<SaleSuccessDTO>> successGroupedBySeller() {
+		List<SaleSuccessDTO> list = service.successGroupedBySeller();
 		return ResponseEntity.ok(list); //Retorna 200
 	}
 }
