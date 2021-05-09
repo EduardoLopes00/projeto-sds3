@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { type } from 'os'
+import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts'
 import { SaleSum } from 'types/sale';
 import { BASE_URL } from 'utils/requests';
@@ -11,11 +12,10 @@ type ChartData = {
 
 const DonutChart = () => {
 
-    // FORMA ERRADA (SEM HOOKS)
-    let chartData: ChartData = { labels: [], series: [] };
+    const [chartData, setChartData] = useState<ChartData>({ labels: [], series: [] })
 
-    // FORMA ERRADA (SEM HOOKS)
-    axios.get(`${BASE_URL}/sales/amount-by-seller`)
+    useEffect(() => {
+        axios.get(`${BASE_URL}/sales/amount-by-seller`)
         .then(response => {
             console.log(response.data)
 
@@ -23,10 +23,10 @@ const DonutChart = () => {
             const myLabels = data.map(x => x.sellerName)
             const mySeries = data.map(x => x.sum);
 
-            debugger;
-
-            chartData = { labels: myLabels, series: mySeries }
+            setChartData({ labels: myLabels, series: mySeries })
         })
+    }, []);
+
 
     const options = {
         legend: {
